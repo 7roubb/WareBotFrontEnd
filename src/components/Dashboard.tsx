@@ -51,40 +51,40 @@ export default function Dashboard() {
       title: 'Total Products',
       value: stats.totalProducts,
       icon: Package,
-      color: 'bg-blue-500',
-      lightColor: 'bg-blue-50',
-      textColor: 'text-blue-600',
+      color: 'bg-gradient-to-br from-yellow-400 to-amber-500',
+      lightColor: 'bg-yellow-50',
+      textColor: 'text-amber-700',
     },
     {
       title: 'Total Shelves',
       value: stats.totalShelves,
       icon: Warehouse,
-      color: 'bg-emerald-500',
-      lightColor: 'bg-emerald-50',
-      textColor: 'text-emerald-600',
+      color: 'bg-gradient-to-br from-amber-400 to-orange-500',
+      lightColor: 'bg-amber-50',
+      textColor: 'text-orange-700',
     },
     {
       title: 'Total Robots',
       value: stats.totalRobots,
       icon: Bot,
-      color: 'bg-amber-500',
-      lightColor: 'bg-amber-50',
-      textColor: 'text-amber-600',
+      color: 'bg-gradient-to-br from-yellow-500 to-amber-600',
+      lightColor: 'bg-yellow-50',
+      textColor: 'text-amber-700',
     },
     {
       title: 'Available Robots',
       value: stats.availableRobots,
       icon: TrendingUp,
-      color: 'bg-purple-500',
-      lightColor: 'bg-purple-50',
-      textColor: 'text-purple-600',
+      color: 'bg-gradient-to-br from-amber-500 to-yellow-600',
+      lightColor: 'bg-amber-50',
+      textColor: 'text-yellow-700',
     },
   ];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }

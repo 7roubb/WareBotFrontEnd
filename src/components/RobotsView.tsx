@@ -73,7 +73,7 @@ export default function RobotsView() {
   if (loading && robots.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -87,7 +87,7 @@ export default function RobotsView() {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 shadow-lg transition-colors"
         >
           <Plus className="w-5 h-5" />
           Add Robot
@@ -147,7 +147,7 @@ export default function RobotsView() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleEdit(robot)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-amber-600 hover:bg-yellow-50 rounded-lg transition-colors"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>

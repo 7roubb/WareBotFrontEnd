@@ -77,7 +77,7 @@ export default function ProductsView() {
   if (loading && products.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -91,7 +91,7 @@ export default function ProductsView() {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg"
         >
           <Plus className="w-5 h-5" />
           Add Product
@@ -112,7 +112,7 @@ export default function ProductsView() {
         </div>
         <button
           onClick={handleSearch}
-          className="px-6 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
+          className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg"
         >
           Search
         </button>
@@ -157,7 +157,7 @@ export default function ProductsView() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-yellow-100 text-amber-700 rounded-full text-sm font-medium">
                       {product.category}
                     </span>
                   </td>
@@ -180,7 +180,7 @@ export default function ProductsView() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleEdit(product)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-amber-600 hover:bg-yellow-50 rounded-lg transition-colors"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>

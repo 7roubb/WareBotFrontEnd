@@ -58,15 +58,15 @@ export default function RobotModal({ robot, onClose }: RobotModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-gradient-to-r from-yellow-400 to-amber-500 border-b border-amber-300 px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-900">
             {robot ? 'Edit Robot' : 'Add Robot'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-slate-900" />
           </button>
         </div>
 
@@ -80,7 +80,7 @@ export default function RobotModal({ robot, onClose }: RobotModalProps) {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
 
@@ -92,7 +92,7 @@ export default function RobotModal({ robot, onClose }: RobotModalProps) {
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="IDLE">Idle</option>
                 <option value="BUSY">Busy</option>
@@ -108,7 +108,7 @@ export default function RobotModal({ robot, onClose }: RobotModalProps) {
               <select
                 value={formData.available ? 'true' : 'false'}
                 onChange={(e) => setFormData({ ...formData, available: e.target.value === 'true' })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="true">Yes</option>
                 <option value="false">No</option>
@@ -125,7 +125,7 @@ export default function RobotModal({ robot, onClose }: RobotModalProps) {
               value={formData.currentShelfId}
               onChange={(e) => setFormData({ ...formData, currentShelfId: e.target.value })}
               placeholder="Enter shelf ID if assigned"
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
 
@@ -140,7 +140,7 @@ export default function RobotModal({ robot, onClose }: RobotModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg disabled:opacity-50"
             >
               {loading ? 'Saving...' : robot ? 'Update' : 'Create'}
             </button>

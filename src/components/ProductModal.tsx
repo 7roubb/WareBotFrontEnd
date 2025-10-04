@@ -94,15 +94,15 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-gradient-to-r from-yellow-400 to-amber-500 border-b border-amber-300 px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-900">
             {product ? 'Edit Product' : 'Add Product'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-slate-900" />
           </button>
         </div>
 
@@ -116,7 +116,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
 
@@ -132,7 +132,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 min="0"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
             </div>
 
@@ -143,14 +143,33 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="ELECTRONICS">Electronics</option>
+                <option value="COMPUTERS">Computers</option>
+                <option value="MOBILE_PHONES">Mobile Phones</option>
                 <option value="CLOTHING">Clothing</option>
-                <option value="FOOD">Food</option>
+                <option value="FOOTWEAR">Footwear</option>
+                <option value="HOME_APPLIANCES">Home Appliances</option>
                 <option value="FURNITURE">Furniture</option>
-                <option value="TOYS">Toys</option>
                 <option value="BOOKS">Books</option>
+                <option value="TOYS">Toys</option>
+                <option value="GROCERY">Grocery</option>
+                <option value="HEALTH">Health</option>
+                <option value="BEAUTY">Beauty</option>
+                <option value="SPORTS">Sports</option>
+                <option value="OUTDOORS">Outdoors</option>
+                <option value="AUTOMOTIVE">Automotive</option>
+                <option value="JEWELRY">Jewelry</option>
+                <option value="OFFICE_SUPPLIES">Office Supplies</option>
+                <option value="MUSIC">Music</option>
+                <option value="PET_SUPPLIES">Pet Supplies</option>
+                <option value="BABY_PRODUCTS">Baby Products</option>
+                <option value="VIDEO_GAMES">Video Games</option>
+                <option value="STATIONERY">Stationery</option>
+                <option value="GARDEN">Garden</option>
+                <option value="ART_SUPPLIES">Art Supplies</option>
+                <option value="DIY_TOOLS">DIY Tools</option>
               </select>
             </div>
           </div>
@@ -166,7 +185,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 min="0"
                 value={formData.quantityInStock}
                 onChange={(e) => setFormData({ ...formData, quantityInStock: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
             </div>
 
@@ -177,7 +196,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               <select
                 value={formData.available ? 'true' : 'false'}
                 onChange={(e) => setFormData({ ...formData, available: e.target.value === 'true' })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="true">Available</option>
                 <option value="false">Unavailable</option>
@@ -194,7 +213,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
               placeholder="electronics, gadget, new"
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
 
@@ -261,7 +280,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg disabled:opacity-50"
             >
               {loading ? 'Saving...' : product ? 'Update' : 'Create'}
             </button>
