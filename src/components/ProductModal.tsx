@@ -15,6 +15,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     quantityInStock: 0,
     available: true,
     tags: '',
+    discountPercentage: 0,
+    onSale: false,
+    saleStart: '',
+    saleEnd: '',
   });
   const [imageFiles, setImageFiles] = useState<string[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -29,6 +33,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
         quantityInStock: product.quantityInStock,
         available: product.available,
         tags: product.tags.join(', '),
+        discountPercentage: product.discountPercentage || 0,
+        onSale: product.onSale || false,
+        saleStart: product.saleStart ? new Date(product.saleStart).toISOString().slice(0, 16) : '',
+        saleEnd: product.saleEnd ? new Date(product.saleEnd).toISOString().slice(0, 16) : '',
       });
       if (product.imageUrls && product.imageUrls.length > 0) {
         setImagePreviews(product.imageUrls);
@@ -71,9 +79,13 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
         quantityInStock: formData.quantityInStock,
         available: formData.available,
         tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
-        descriptions: [],
-        localizedNames: {},
+        descriptions: [{ en: { short: formData.name, long: formData.name } }],
+        localizedNames: { en: formData.name },
         imageBase64List,
+        discountPercentage: formData.discountPercentage,
+        onSale: formData.onSale,
+        saleStart: formData.saleStart ? new Date(formData.saleStart).toISOString() : null,
+        saleEnd: formData.saleEnd ? new Date(formData.saleEnd).toISOString() : null,
       };
 
       if (product) {
@@ -85,7 +97,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       onClose();
     } catch (error) {
       console.error('Failed to save product:', error);
-      alert('Failed to save product. Please try again.');
+      alert('Failed to save product. Please check all required fields.');
     } finally {
       setLoading(false);
     }
@@ -93,57 +105,59 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-gradient-to-r from-yellow-400 to-amber-500 border-b border-amber-300 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-slate-900">
+      <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 border-b border-orange-300 px-6 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">
             {product ? 'Edit Product' : 'Add Product'}
           </h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-white/20 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5 text-slate-900" />
+            <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Product Name
+              Product Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
+              minLength={3}
+              maxLength={100}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Price
+                Price <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
                 required
                 step="0.01"
-                min="0"
+                min="0.01"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Category
+                Category <span className="text-red-500">*</span>
               </label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <option value="ELECTRONICS">Electronics</option>
                 <option value="COMPUTERS">Computers</option>
@@ -177,15 +191,16 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Quantity in Stock
+                Quantity in Stock <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
                 required
                 min="0"
+                max="10000"
                 value={formData.quantityInStock}
                 onChange={(e) => setFormData({ ...formData, quantityInStock: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
@@ -196,7 +211,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               <select
                 value={formData.available ? 'true' : 'false'}
                 onChange={(e) => setFormData({ ...formData, available: e.target.value === 'true' })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <option value="true">Available</option>
                 <option value="false">Unavailable</option>
@@ -206,20 +221,80 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Tags (comma-separated)
+              Tags (comma-separated) <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
+              required
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
               placeholder="electronics, gadget, new"
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Discount %
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="100"
+                value={formData.discountPercentage}
+                onChange={(e) => setFormData({ ...formData, discountPercentage: parseFloat(e.target.value) })}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                On Sale
+              </label>
+              <select
+                value={formData.onSale ? 'true' : 'false'}
+                onChange={(e) => setFormData({ ...formData, onSale: e.target.value === 'true' })}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              >
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          {formData.onSale && (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Sale Start
+                </label>
+                <input
+                  type="datetime-local"
+                  value={formData.saleStart}
+                  onChange={(e) => setFormData({ ...formData, saleStart: e.target.value })}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Sale End
+                </label>
+                <input
+                  type="datetime-local"
+                  value={formData.saleEnd}
+                  onChange={(e) => setFormData({ ...formData, saleEnd: e.target.value })}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Product Images
+              Product Images <span className="text-red-500">*</span>
             </label>
             <div className="space-y-3">
               <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
@@ -280,9 +355,9 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-lg disabled:opacity-50"
             >
-              {loading ? 'Saving...' : product ? 'Update' : 'Create'}
+              {loading ? 'Saving...' : product ? 'Update Product' : 'Create Product'}
             </button>
           </div>
         </form>

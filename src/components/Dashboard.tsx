@@ -51,7 +51,7 @@ export default function Dashboard() {
       title: 'Total Products',
       value: stats.totalProducts,
       icon: Package,
-      color: 'bg-gradient-to-br from-yellow-400 to-amber-500',
+      color: 'bg-gradient-to-br from-orange-400 to-amber-500',
       lightColor: 'bg-yellow-50',
       textColor: 'text-amber-700',
     },
@@ -67,7 +67,7 @@ export default function Dashboard() {
       title: 'Total Robots',
       value: stats.totalRobots,
       icon: Bot,
-      color: 'bg-gradient-to-br from-yellow-500 to-amber-600',
+      color: 'bg-gradient-to-br from-orange-500 to-red-500',
       lightColor: 'bg-yellow-50',
       textColor: 'text-amber-700',
     },
@@ -84,7 +84,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }

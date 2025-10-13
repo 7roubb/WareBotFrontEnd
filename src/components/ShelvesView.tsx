@@ -58,7 +58,7 @@ export default function ShelvesView() {
   if (loading && shelves.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }

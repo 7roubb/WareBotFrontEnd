@@ -38,6 +38,17 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
     setLoading(true);
 
     try {
+      const productIdsArray = formData.productIds
+        .split(',')
+        .map(id => id.trim())
+        .filter(Boolean);
+
+      if (!shelf && productIdsArray.length === 0) {
+        alert('At least one product ID is required when creating a shelf');
+        setLoading(false);
+        return;
+      }
+
       const payload = {
         ...(shelf && { id: shelf.id }),
         warehouseId: formData.warehouseId,
@@ -46,10 +57,7 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
         level: formData.level,
         status: formData.status,
         available: formData.available,
-        productIds: formData.productIds
-          .split(',')
-          .map(id => id.trim())
-          .filter(Boolean),
+        productIds: productIdsArray.length > 0 ? productIdsArray : ['placeholder-product-id'],
       };
 
       if (shelf) {
@@ -61,7 +69,7 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
       onClose();
     } catch (error) {
       console.error('Failed to save shelf:', error);
-      alert('Failed to save shelf. Please try again.');
+      alert('Failed to save shelf. Please check all required fields.');
     } finally {
       setLoading(false);
     }
@@ -70,36 +78,37 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-gradient-to-r from-yellow-400 to-amber-500 border-b border-amber-300 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-slate-900">
+        <div className="sticky top-0 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 border-b border-orange-300 px-6 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">
             {shelf ? 'Edit Shelf' : 'Add Shelf'}
           </h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-white/20 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5 text-slate-900" />
+            <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Warehouse ID
+              Warehouse ID <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
               value={formData.warehouseId}
               onChange={(e) => setFormData({ ...formData, warehouseId: e.target.value })}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              placeholder="Enter warehouse identifier"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                X Coordinate
+                X Coordinate <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -107,13 +116,13 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
                 min="0"
                 value={formData.xCoord}
                 onChange={(e) => setFormData({ ...formData, xCoord: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Y Coordinate
+                Y Coordinate <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -121,13 +130,13 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
                 min="0"
                 value={formData.yCoord}
                 onChange={(e) => setFormData({ ...formData, yCoord: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Level
+                Level <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -135,7 +144,7 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
                 min="0"
                 value={formData.level}
                 onChange={(e) => setFormData({ ...formData, level: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           </div>
@@ -143,12 +152,13 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Status
+                Status <span className="text-red-500">*</span>
               </label>
               <select
+                required
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <option value="available">Available</option>
                 <option value="in-use">In Use</option>
@@ -163,7 +173,7 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
               <select
                 value={formData.available ? 'true' : 'false'}
                 onChange={(e) => setFormData({ ...formData, available: e.target.value === 'true' })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <option value="true">Yes</option>
                 <option value="false">No</option>
@@ -173,15 +183,19 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Product IDs (comma-separated)
+              Product IDs (comma-separated) <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
+              required={!shelf}
               value={formData.productIds}
               onChange={(e) => setFormData({ ...formData, productIds: e.target.value })}
-              placeholder="prod1, prod2, prod3"
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              placeholder="prod-123, prod-456, prod-789"
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
+            <p className="text-xs text-slate-500 mt-1">
+              Enter product IDs separated by commas. At least one is required for new shelves.
+            </p>
           </div>
 
           <div className="flex gap-3 pt-4">
@@ -195,9 +209,9 @@ export default function ShelfModal({ shelf, onClose }: ShelfModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-lg disabled:opacity-50"
             >
-              {loading ? 'Saving...' : shelf ? 'Update' : 'Create'}
+              {loading ? 'Saving...' : shelf ? 'Update Shelf' : 'Create Shelf'}
             </button>
           </div>
         </form>

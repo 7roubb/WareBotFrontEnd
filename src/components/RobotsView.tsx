@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, CreditCard as Edit2, Trash2, Bot, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Edit2, Trash2, Bot, ChevronLeft, ChevronRight } from 'lucide-react';
 import { robotsApi, Robot } from '../lib/api';
 import RobotModal from './RobotModal';
 
@@ -56,24 +56,30 @@ export default function RobotsView() {
   };
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'idle':
+    switch (status.toUpperCase()) {
+      case 'IDLE':
         return 'bg-green-100 text-green-700';
-      case 'busy':
+      case 'BUSY':
         return 'bg-amber-100 text-amber-700';
-      case 'charging':
+      case 'CHARCHING':
+      case 'CHARGING':
         return 'bg-blue-100 text-blue-700';
-      case 'maintenance':
+      case 'MAINTENANCE':
         return 'bg-red-100 text-red-700';
       default:
         return 'bg-slate-100 text-slate-700';
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    if (status.toUpperCase() === 'CHARCHING') return 'Charging';
+    return status.charAt(0) + status.slice(1).toLowerCase();
+  };
+
   if (loading && robots.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -122,7 +128,7 @@ export default function RobotsView() {
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(robot.status)}`}>
-                      {robot.status}
+                      {getStatusLabel(robot.status)}
                     </span>
                   </td>
                   <td className="px-6 py-4">

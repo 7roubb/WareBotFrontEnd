@@ -77,7 +77,7 @@ export default function ProductsView() {
   if (loading && products.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
+        <div className="animate-spin w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -91,7 +91,7 @@ export default function ProductsView() {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-amber-700 transition-all shadow-lg"
         >
           <Plus className="w-5 h-5" />
           Add Product
@@ -112,7 +112,7 @@ export default function ProductsView() {
         </div>
         <button
           onClick={handleSearch}
-          className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-semibold rounded-lg hover:from-yellow-500 hover:to-amber-600 transition-all shadow-lg"
+          className="px-6 py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-amber-700 transition-all shadow-lg"
         >
           Search
         </button>

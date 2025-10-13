@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar currentView={currentView} onViewChange={setCurrentView} />
-      <main className="flex-1 overflow-auto bg-gradient-to-br from-yellow-50 via-white to-amber-50">
+      <main className="flex-1 overflow-auto bg-gradient-to-br from-orange-50 via-white to-amber-50">
         {renderView()}
       </main>
     </div>
